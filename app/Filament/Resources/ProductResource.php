@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\EMedia;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Livewire\ProductOverview;
 use App\Models\Category;
 use App\Models\Product;
+use Filament\Forms\Set;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
@@ -34,6 +36,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use IbrahimBougaoua\FilamentRatingStar\Actions\RatingStar;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -51,8 +54,15 @@ class ProductResource extends Resource
                         Section::make()->schema([
                             Select::make('category_id')
                                 ->label('Category')
-                                ->options(Category::pluck('name', 'id')),
-                            TextInput::make('name'),
+                                ->options(Category::pluck('name', 'id'))
+                                ->columnSpanFull(),
+                            TextInput::make('name')
+                                ->live()
+                                ->afterStateUpdated(
+                                    fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->dehydrated(),
                             TextInput::make('price'),
                             TextInput::make('quantity'),
                             TextInput::make('content'),
@@ -62,7 +72,7 @@ class ProductResource extends Resource
                         Section::make()->schema([
                             SpatieMediaLibraryFileUpload::make('url')
                                 ->label('Image')
-                                ->collection('product-urls')
+                                ->collection(EMedia::getName(2))
                                 ->multiple(),
                         ])
                     ])

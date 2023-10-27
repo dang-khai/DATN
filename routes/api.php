@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -24,9 +24,11 @@ use App\Http\Controllers\Auth\LogoutController;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', LogoutController::class);
-    Route::post('/add-to-cart', [CartController::class, 'addToCart']);
-    Route::get('/get-cart', [CartController::class, 'getCart']);
-    Route::post('/delete-form-cart', [CartController::class, 'delete']);
+
+    Route::prefix('/products')->group(function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{id}', [ProductController::class, 'show']);
+    });
 });
 
 Route::post('/register', [RegisterController::class, 'register']);

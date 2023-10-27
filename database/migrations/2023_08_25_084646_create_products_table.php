@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('content')->nullable();
             $table->string('url')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

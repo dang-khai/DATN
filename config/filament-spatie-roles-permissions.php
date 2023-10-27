@@ -20,7 +20,7 @@ return [
 
     'guard_names' => [
         'web' => 'web',
-        'api' => 'api',
+        // 'api' => 'api',
     ],
 
     'default_guard_name' => null,
@@ -31,7 +31,7 @@ return [
 
         'guard_names' => [
             'web',
-            'api',
+            // 'api',
         ],
 
         'permission_affixes' => [
@@ -51,8 +51,8 @@ return [
             /*
              * Additional Resource Permissions
              */
-            'replicate',
-            'reorder',
+            // 'replicate',
+            // 'reorder',
         ],
 
         /*
