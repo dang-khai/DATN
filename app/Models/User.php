@@ -9,6 +9,7 @@ use App\Traits\Timestamp;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,9 +32,9 @@ class User extends Authenticatable implements FilamentUser
         'code',
     ];
 
-    public function cart(): HasOne
+    public function reviews(): HasMany
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasMany(Review::class);
     }
 
     public function canAccessPanel(Panel $panel): bool

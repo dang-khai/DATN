@@ -14,6 +14,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -22,6 +23,7 @@ use Filament\Tables\Table;
 use IbrahimBougaoua\FilamentRatingStar\Actions\RatingStar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class ProductsRelationManager extends RelationManager
 {
@@ -34,10 +36,16 @@ class ProductsRelationManager extends RelationManager
                 Group::make()
                     ->schema([
                         Section::make()->schema([
-                            TextInput::make('name'),
+                            TextInput::make('name')
+                                ->live()
+                                ->afterStateUpdated(
+                                    fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->dehydrated(),
                             TextInput::make('price'),
                             TextInput::make('quantity'),
-                            TextInput::make('content'),
+                            TextInput::make('content')->columnSpanFull(),
                             MarkdownEditor::make('description')
                                 ->columnSpan('full'),
                         ])->columns(2),

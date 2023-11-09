@@ -65,7 +65,7 @@ class ProductResource extends Resource
                                 ->dehydrated(),
                             TextInput::make('price'),
                             TextInput::make('quantity'),
-                            TextInput::make('content'),
+                            TextInput::make('content')->columnSpanFull(),
                             MarkdownEditor::make('description')
                                 ->columnSpan('full'),
                         ])->columns(2),
@@ -143,7 +143,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ReviewsRelationManager::class,
         ];
     }
 

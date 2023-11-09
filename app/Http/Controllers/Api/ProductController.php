@@ -12,10 +12,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-
+        $products = Product::with('reviews')->get();
         foreach ($products as $product) {
-            $product->images = $product->getMedia();
+            $product->getMedia('', ['original_url', 'file_name']);
         }
 
         return response()->json($products);
@@ -28,8 +27,8 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
-
-        $product->images = $product->getMedia();
+        $product->reviews;
+        $product->getMedia('', ['original_url', 'file_name']);
 
         return response()->json($product);
     }

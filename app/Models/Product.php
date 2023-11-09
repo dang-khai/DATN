@@ -23,8 +23,9 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Category::class);
     }
 
-    // public function images(): HasMany
-    // {
-    //     return $this->hasMany(Media::class);
-    // }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
