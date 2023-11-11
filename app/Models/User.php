@@ -30,6 +30,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'code',
+        'provider_id'
     ];
 
     public function reviews(): HasMany

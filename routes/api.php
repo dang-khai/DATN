@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\GoogleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,3 +37,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/verify-email', [RegisterController::class, 'verify']);
 Route::post('/login', [LoginController::class, 'login']);
+
+//google login
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/google', [GoogleController::class, 'redirectToGoogle']);
+    Route::get('/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+});
