@@ -7,6 +7,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Hash;
 
 class GoogleController extends Controller
 {
@@ -20,30 +21,31 @@ class GoogleController extends Controller
         try {
       
             $user = Socialite::driver('google')->user();
+            $existingUser = User::where('email', $user->email)->first();
+
+            if($existingUser){
        
-            $user = User::where('provider_id', $user->id)->first();
+                // auth()->login($existingUser);
+                $existingUser->tokens()->delete();
+                $existingUser = $existingUser->createToken($existingUser->name);
+
+                return response()->json($existingUser);
        
-            if($user){
-       
-                auth()->login($user);
-      
-                return redirect()->intended('dashboard');
-       
-            }else{
+            } else {
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'provider_id'=> $user->id,
-                    'password' => encrypt('123456dummy')
+                    'email_verified_at' => now(),
+                    'password' => Hash::make('12345678'),
                 ]);
+                $newUser = $newUser->createToken($newUser->name);
       
-                auth()->login($newUser);
-      
-                return redirect()->intended('dashboard');
+                return response()->json($newUser);
             }
       
         } catch (Exception $e) {
-            dd($e->getMessage());
+            return $e->getMessage();
         }
 
     }
