@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Enums\EOrderStatus;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\OrderDetail;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Filament\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
+use App\Filament\Resources\OrderResource;
 
 class OrderController extends Controller
 {
@@ -55,6 +59,17 @@ class OrderController extends Controller
         }
 
         $order->update(['total_amount' => $total_amount]);
+
+        Notification::make()    
+            ->title('New order')
+            ->info()
+            ->icon('heroicon-o-shopping-bag')
+            ->actions([
+                Action::make('View')
+                    ->url(OrderResource::getUrl('edit', ['record' => $order])),
+            ])
+            ->sendToDatabase(User::where('email', 'nguyendangkhai111@gmail.com')->first());
+            // ->broadcast(User::where('email', 'nguyendangkhai111@gmail.com')->first());
 
         return response()->json(['message' => 'Order created successfully']);
     }
