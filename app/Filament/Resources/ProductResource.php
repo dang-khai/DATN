@@ -53,18 +53,20 @@ class ProductResource extends Resource
                     ->schema([
                         Section::make()->schema([
                             Select::make('category_id')
+                                ->required()
                                 ->label('Category')
                                 ->options(Category::pluck('name', 'id'))
                                 ->columnSpanFull(),
                             TextInput::make('name')
-                                ->live()
+                                ->required()
+                                ->live(onBlur:true)
                                 ->afterStateUpdated(
                                     fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                             TextInput::make('slug')
                                 ->disabled()
                                 ->dehydrated(),
-                            TextInput::make('price'),
-                            TextInput::make('quantity'),
+                            TextInput::make('price')->required(),
+                            TextInput::make('quantity')->required(),
                             TextInput::make('content')->columnSpanFull(),
                             MarkdownEditor::make('description')
                                 ->columnSpan('full'),
@@ -84,8 +86,6 @@ class ProductResource extends Resource
                                 ->label('Visible')
                                 ->helperText('This product will be hidden from all sales channels.')
                                 ->default(true),
-                                RatingStar::make('rating')
-                                    ->helperText('Rating star of this product'),
                         ])
                     ])
                     ->columnSpan(['lg' => 1]),

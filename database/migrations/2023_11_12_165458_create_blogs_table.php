@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,13 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_information', function (Blueprint $table) {
+        Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('address');
-            $table->tinyInteger('payment');
+            $table->string('title');
+            $table->text('description');
+            $table->tinyInteger('visibility')->nullable();
+            $table->string('slug');
+            $table->timestamp('published_at')->default(Carbon::now());
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_information');
+        Schema::dropIfExists('blogs');
     }
 };

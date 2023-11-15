@@ -26,11 +26,14 @@ class User extends Authenticatable implements FilamentUser
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'fullname',
         'email',
         'password',
         'code',
-        'provider_id'
+        'provider_id',
+        'avatar',
+        'phone',
+        'address',
     ];
 
     public function reviews(): HasMany
@@ -62,4 +65,9 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

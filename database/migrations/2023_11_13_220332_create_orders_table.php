@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            // $table->unsignedBigInteger('cart_id');
-            // $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-            $table->unsignedBigInteger('order_information_id');
-            $table->foreign('order_information_id')->references('id')->on('order_information')->onDelete('cascade');
+            $table->string('fullname')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable(); 
+            $table->integer('status')->nullable(); 
+            $table->integer('payment')->nullable();
+            $table->timestamp('order_at');
+            $table->string('total_amount')->nullable();
+            $table->string('shipping')->default('25000');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

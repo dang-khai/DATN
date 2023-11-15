@@ -27,14 +27,14 @@ class LoginController extends Controller
         }
 
         $user->tokens()->delete();
-        $token = $user->createToken($user->name);
+        $user->token = $user->createToken($user->fullname);
 
         // event(new \App\Events\testBroadcast($user));   
-        $userAdmin = User::where('name', 'admin')->first();
-        Notification::make()
-            ->title('cc')
-            ->broadcast($userAdmin);
+        $userAdmin = User::where('fullname', 'admin')->first();
+        // Notification::make()
+        //     ->title('cc')
+        //     ->broadcast($userAdmin);
         
-        return response()->json($token);
+        return response()->json($user);
     }
 }

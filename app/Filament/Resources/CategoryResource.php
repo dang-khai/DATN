@@ -20,8 +20,6 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
@@ -36,20 +34,19 @@ class CategoryResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->live()
-                    ->afterStateUpdated(
-                        fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                 
                 TextInput::make('slug')
                     ->disabled()
                     ->dehydrated(),
                 Toggle::make('visibility'),
                 MarkdownEditor::make('description')->columnSpanFull(),
-                SpatieMediaLibraryFileUpload::make('url')
-                        ->label('Image')
-                        ->collection(EMedia::getName(1))
-                        ->multiple()
-                        ->columnSpanFull(),
+                // SpatieMediaLibraryFileUpload::make('url')
+                //         ->label('Image')
+                //         ->collection(EMedia::getName(1))
+                //         ->multiple()
+                //         ->columnSpanFull(),
             ]);
     }
 

@@ -18,9 +18,11 @@ class RegisterController extends Controller
     {
         try {
             DB::beginTransaction();
-
-            $user = User::create($request->all());
-            $token = $user->createToken($request->name);
+            $data = $request->all();
+            $data['avatar'] = asset('storage/User-avatar.svg.png');
+            $user = User::create($data);
+            
+            $token = $user->createToken($request->fullname);
 
             $respone = [
                 'data' => $user,
@@ -48,8 +50,8 @@ class RegisterController extends Controller
 
     public function verify(Request $request)
     {
-        $user = User::where('code', $request->code);
-
+        $user = User::where('code', $request->code)->first();
+        
         if (!$user) {
             return response()->json(['message' => 'Code is invalid'], Response::HTTP_BAD_REQUEST);
         }
