@@ -21,23 +21,23 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         $total_amount = 0;
-        $data = [ 
-            "fullname" => "hehehehe",
-            "phone" => "0904059215",
-            "address" => "ehhehe",
-            "order_detail" => [
-                [
-                    'product_id' => 29,
-                    'quantity' => 3,
-                    'price' => '20000'
-                ],
-                [
-                    'product_id' => 31,
-                    'quantity' => 5,
-                    'price' => '20000'
-                ],
-            ],
-        ];
+        // $data = [ 
+        //     "fullname" => "hehehehe",
+        //     "phone" => "0904059215",
+        //     "address" => "ehhehe",
+        //     "order_detail" => [
+        //         [
+        //             'product_id' => 29,
+        //             'quantity' => 3,
+        //             'price' => '20000'
+        //         ],
+        //         [
+        //             'product_id' => 31,
+        //             'quantity' => 5,
+        //             'price' => '20000'
+        //         ],
+        //     ],
+        // ];
 
         $order = Order::create([
             'user_id' => auth()->id(),
@@ -47,12 +47,12 @@ class OrderController extends Controller
             'order_at' => Carbon::now(),
         ]);
 
-        foreach ($data['order_detail'] as $item) {
+        foreach ($request->order_detail as $item) {
             OrderDetail::create([
                 'order_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'amount' => $item['quantity'],
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'amount' => $item->price,
             ]);
             $total_amount += $item['quantity'] * $item['price'];
         }

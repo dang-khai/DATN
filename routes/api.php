@@ -47,7 +47,11 @@ Route::prefix('/products')->group(function () {
     Route::get('/{id}', [ProductController::class, 'show']);
 });
 
-Route::get('/blogs', [BlogController::class, 'index']);
+
+Route::prefix('/blogs')->group(function () {
+    Route::get('/', [BlogController::class, 'index']);
+    Route::get('/{id}', [BlogController::class, 'show']);
+});
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/verify-email', [RegisterController::class, 'verify']);
