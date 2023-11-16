@@ -54,11 +54,15 @@ class ProductResource extends Resource
                         Section::make()->schema([
                             Select::make('category_id')
                                 ->required()
+                                ->rules('required')
+                                ->validationAttribute('required')
                                 ->label('Category')
                                 ->options(Category::pluck('name', 'id'))
                                 ->columnSpanFull(),
                             TextInput::make('name')
+                                ->rules('required')
                                 ->required()
+                                ->validationAttribute('required')
                                 ->live(onBlur:true)
                                 ->afterStateUpdated(
                                     fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
@@ -67,10 +71,15 @@ class ProductResource extends Resource
                                 ->dehydrated(),
                             TextInput::make('price')
                                 ->numeric()
+                                ->rules('required')
+                                ->required()
+                                ->validationAttribute('required')
                                 ->step('1000')
                                 ->required(),
                             TextInput::make('quantity')
+                                ->rules('required')
                                 ->required()
+                                ->validationAttribute('required')
                                 ->numeric()
                                 ->step('1'),
                             TextInput::make('content')->columnSpanFull(),

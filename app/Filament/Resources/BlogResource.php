@@ -39,7 +39,8 @@ class BlogResource extends Resource
                 ->schema([
                     Section::make()->schema([
                         TextInput::make('title')
-                            ->required()
+                            ->rules('required')
+                            ->validationAttribute('required')
                             ->live(onBlur:true)
                             ->afterStateUpdated(
                                 fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
@@ -47,6 +48,8 @@ class BlogResource extends Resource
                             ->disabled()
                             ->dehydrated(),
                         MarkdownEditor::make('description')
+                            ->required()
+                            ->validationAttribute('required')
                             ->columnSpan('full'),
                     ])->columns(2),
                     Section::make()->schema([
@@ -54,7 +57,7 @@ class BlogResource extends Resource
                             ->label('Image')
                             ->collection(EMedia::getName(3))
                             ->multiple(),
-                    ])
+                    ]),
                 ])
                 ->columnSpan(['lg' => 2]),
             Group::make()

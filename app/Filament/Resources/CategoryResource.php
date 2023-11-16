@@ -33,7 +33,9 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->rules('required')
                     ->required()
+                    ->validationAttribute('required')
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                 

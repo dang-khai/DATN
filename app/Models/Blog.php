@@ -14,7 +14,7 @@ class Blog extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $table = 'blogs';
-    protected $fillable = ['title', 'description', 'slug', 'published_at', 'visibility'];
+    protected $fillable = ['title', 'description', 'slug', 'published_at', 'visibility', 'status'];
 
     public function comments(): HasMany
     {
