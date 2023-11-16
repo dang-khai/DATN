@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\EOrderStatus;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Livewire\OrderOverview;
 use App\Models\Order;
 use App\Models\Product;
 use Doctrine\DBAL\Types\StringType;
@@ -23,14 +24,17 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Filament\Tables\Filters\SelectFilter;
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+
 
     public static function form(Form $form): Form
     {
@@ -86,7 +90,8 @@ class OrderResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->getStateUsing(fn ($record) => EOrderStatus::getName($record->status))
-                    ->badge(),
+                    ->badge()
+                    ->color(fn ($record) => EOrderStatus::getColor($record->status)),
                 TextColumn::make('shipping')
                     ->label('Shipment Amount'),
                 TextColumn::make('total_amount')
@@ -97,22 +102,31 @@ class OrderResource extends Resource
                                   
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(EOrderStatus::getAll())
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 // ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);
     }
     
+    public static function getWidgets(): array
+    {
+        return [
+            OrderOverview::class
+        ];
+    }
+
     public static function getFormSchema(string $section = null): array
     {
         if ($section === 'items') {
@@ -131,15 +145,25 @@ class OrderResource extends Resource
                         Forms\Components\TextInput::make('quantity')
                             ->label('Quantity')
                             ->disabled()
-                            ->columnSpan(5),
+                            ->columnSpan(2),
 
                         Forms\Components\TextInput::make('amount')
                             ->label('Unit Price')
                             ->disabled()
-                            ->columnSpan(5),
-                    ])
+                            ->columnSpan(3),
+                    ])->columns(10)
                 ];       
         };
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;  
     }
 
     public static function getRelations(): array

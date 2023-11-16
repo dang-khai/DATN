@@ -80,6 +80,16 @@ class BlogResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title'),
+                TextColumn::make('visibility')
+                    ->getStateUsing(fn ($record) => is_null($record->visibility) ? 'Draft' : 'Published')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'Draft' => 'warning',
+                        'Published' => 'success',
+                    }),
+                TextColumn::make('published_at')
+                    ->label('Publish Date')
+                    ->date(),
             ])
             ->filters([
                 //

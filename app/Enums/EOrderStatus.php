@@ -38,6 +38,24 @@ class EOrderStatus {
         
         return null;
     }
+
+    public static function getColor($value)
+    {
+        switch ($value) {
+            case self::NEW:
+                return 'gray';
+            case self::PROCESSING:
+                return 'warning';
+            case self::SHIPPING:
+                return 'success';
+            case self::DELIVERIED:
+                return 'success';
+            case self::CANCELED:
+                return 'danger';
+        }
+        
+        return null;
+    }
 }
 
 ?>

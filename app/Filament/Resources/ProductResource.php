@@ -65,8 +65,14 @@ class ProductResource extends Resource
                             TextInput::make('slug')
                                 ->disabled()
                                 ->dehydrated(),
-                            TextInput::make('price')->required(),
-                            TextInput::make('quantity')->required(),
+                            TextInput::make('price')
+                                ->numeric()
+                                ->step('1000')
+                                ->required(),
+                            TextInput::make('quantity')
+                                ->required()
+                                ->numeric()
+                                ->step('1'),
                             TextInput::make('content')->columnSpanFull(),
                             MarkdownEditor::make('description')
                                 ->columnSpan('full'),
@@ -126,7 +132,7 @@ class ProductResource extends Resource
             ])
             ->filtersTriggerAction(fn($action) => $action->button()->label('Filter'))
             ->actions([
-                ViewAction::make(),
+                // ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -176,7 +182,7 @@ class ProductResource extends Resource
         ];
     }
     public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+    {
+        return static::getModel()::count();
+    }
 }
