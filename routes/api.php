@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Auth\UpdateProfileController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\OrderController;
 
 /*
@@ -32,9 +34,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::prefix('/order')->group(function () {
         Route::post('/', [OrderController::class, 'store']);
     });
-
+    Route::post('/update-profile', [UpdateProfileController::class, 'update']);
     Route::post('/logout', LogoutController::class);
-
+    Route::post('/comment', [CommentController::class, 'store']);
     Route::post('/review', [ReviewController::class, 'store']);
 });
 

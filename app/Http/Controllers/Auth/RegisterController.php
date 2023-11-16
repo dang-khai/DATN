@@ -22,7 +22,7 @@ class RegisterController extends Controller
             $data['avatar'] = asset('storage/User-avatar.svg.png');
             $user = User::create($data);
             
-            $token = $user->createToken($request->fullname);
+            $token = $user->createToken($request->name);
 
             $respone = [
                 'data' => $user,
@@ -33,10 +33,10 @@ class RegisterController extends Controller
             $user->update(['code' => $code]);
             $user->notify(new VerifyEmail($code));
 
-            Notification::make()
-                ->title('New order')
-                ->icon('heroicon-o-shopping-bag')
-                ->sendToDatabase($user);
+            // Notification::make()
+            //     ->title('New order')
+            //     ->icon('heroicon-o-shopping-bag')
+            //     ->sendToDatabase($user);
             
             DB::commit();
 

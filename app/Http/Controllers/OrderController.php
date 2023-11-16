@@ -23,7 +23,6 @@ class OrderController extends Controller
         $total_amount = 0;
         $data = [ 
             "fullname" => "hehehehe",
-            "quantity" => "2",
             "phone" => "0904059215",
             "address" => "ehhehe",
             "order_detail" => [
